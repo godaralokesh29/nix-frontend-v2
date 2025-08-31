@@ -92,6 +92,7 @@ export default function AddMember() {
         complete: async (results) => {
           const data = results.data as Record<string, string>[];
           const skippedRows: number[] = [];
+          const userData = [];
 
           for (let i = 0; i < data.length; i++) {
             const { name, email, role } = data[i];
@@ -111,24 +112,17 @@ export default function AddMember() {
               continue;
             }
 
-            try {
-              await API.post("/auth/signup", {
-                name,
-                username: email,
-                teamRole: matchedRole.role_id,
-              });
-              toast.success(`Added ${name} successfully from ${file.name}`);
-            } catch (e) {
-              if (e instanceof Error) {
-                errors.push(
-                  `Error adding ${name} from ${file.name}: ${e.message}`
-                );
-              } else {
-                errors.push(
-                  `Error adding ${name} from ${file.name}: Unknown error occurred.`
-                );
-              }
-            }
+            userData.push({
+              name: name,
+              email: email,
+              role: role,
+            });
+          }
+
+          try {
+            await API.post("/auth/post-add-users", { users: userData });
+          } catch (e) {
+            console.log(e);
           }
 
           if (skippedRows.length > 0) {

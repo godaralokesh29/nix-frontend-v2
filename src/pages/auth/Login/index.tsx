@@ -99,7 +99,7 @@ export default function Login() {
     await API.post(
       "/auth/login",
       { email, password },
-      { withCredentials: true },
+      { withCredentials: true }
     )
       .then((res) => {
         const data = res.data;
