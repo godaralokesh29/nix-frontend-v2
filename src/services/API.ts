@@ -5,7 +5,6 @@ const API = axios.create({
   baseURL: import.meta.env.VITE_NIX_BACKEND,
 });
 
-
 API.interceptors.request.use((req) => {
   const token = getTokenFromStorage();
   if (token) {

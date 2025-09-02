@@ -108,99 +108,99 @@ export default function EditMember() {
   ) => {
     const updatedData = { ...state };
     switch (action.type) {
-    case ActionType.ToggleShowConfirmPassword:
-      updatedData.showConfirmPassword = action.payload;
-      break;
-    case ActionType.ToggleShowPassword:
-      updatedData.showPassword = action.payload;
-      break;
-    case ActionType.UpdateName:
-      updatedData.target_name = action.payload;
-      break;
-    case ActionType.UpdateEmail:
-      updatedData.target_email = action.payload;
-      break;
-    case ActionType.UpdateBio:
-      updatedData.target_bio = action.payload;
-      break;
-    case ActionType.UpdatePassword:
-      updatedData.newPassword = action.payload;
-      break;
-    case ActionType.UpdateConfirmPassword:
-      updatedData.confirmPassword = action.payload;
-      break;
-    case ActionType.UpdateProfilePictureLink:
-      updatedData.profilePicture = action.payload;
-      break;
-    case ActionType.SetProfilePicture:
-      {
-        const avatar = action.payload as File;
-        if (avatar) {
-          toastId.current = toast.info("Uploading 0%", { autoClose: false });
-          const form = new FormData();
-          form.append("avatar", avatar);
-          const endpoint = "/images/upload-avatar";
-          const requestMethod = "POST";
+      case ActionType.ToggleShowConfirmPassword:
+        updatedData.showConfirmPassword = action.payload;
+        break;
+      case ActionType.ToggleShowPassword:
+        updatedData.showPassword = action.payload;
+        break;
+      case ActionType.UpdateName:
+        updatedData.target_name = action.payload;
+        break;
+      case ActionType.UpdateEmail:
+        updatedData.target_email = action.payload;
+        break;
+      case ActionType.UpdateBio:
+        updatedData.target_bio = action.payload;
+        break;
+      case ActionType.UpdatePassword:
+        updatedData.newPassword = action.payload;
+        break;
+      case ActionType.UpdateConfirmPassword:
+        updatedData.confirmPassword = action.payload;
+        break;
+      case ActionType.UpdateProfilePictureLink:
+        updatedData.profilePicture = action.payload;
+        break;
+      case ActionType.SetProfilePicture:
+        {
+          const avatar = action.payload as File;
+          if (avatar) {
+            toastId.current = toast.info("Uploading 0%", { autoClose: false });
+            const form = new FormData();
+            form.append("avatar", avatar);
+            const endpoint = "/images/upload-avatar";
+            const requestMethod = "POST";
 
-          API({
-            method: requestMethod,
-            url: endpoint,
-            data: form,
-            onUploadProgress: (progressEvent) => {
-              const progress = progressEvent.loaded / progressEvent.total;
-              const percentCompleted = Math.round(progress * 100);
-              console.log(progress);
-              toast.update(toastId.current, {
-                render: `Uploading ${percentCompleted}%`,
-                type: "info",
-                progress: progress,
-              });
-            },
-          })
-            .then((res) => {
-              toast.update(toastId.current, {
-                render: "Uploading complete!",
-                type: "info",
-                progress: 1,
-              });
-              toast.done(toastId.current);
-              toast.success("Image uploaded successfully");
-              const image_name = res.data.data.name;
-              dispatch({
-                type: ActionType.UpdateProfilePictureLink,
-                payload: image_name,
-              });
+            API({
+              method: requestMethod,
+              url: endpoint,
+              data: form,
+              onUploadProgress: (progressEvent) => {
+                const progress = progressEvent.loaded / progressEvent.total;
+                const percentCompleted = Math.round(progress * 100);
+                console.log(progress);
+                toast.update(toastId.current, {
+                  render: `Uploading ${percentCompleted}%`,
+                  type: "info",
+                  progress: progress,
+                });
+              },
             })
-            .catch((e) => {
-              toast.done(toastId.current);
-              setError(e);
-            })
-            .finally(() => (toastId.current = null));
+              .then((res) => {
+                toast.update(toastId.current, {
+                  render: "Uploading complete!",
+                  type: "info",
+                  progress: 1,
+                });
+                toast.done(toastId.current);
+                toast.success("Image uploaded successfully");
+                const image_name = res.data.data.name;
+                dispatch({
+                  type: ActionType.UpdateProfilePictureLink,
+                  payload: image_name,
+                });
+              })
+              .catch((e) => {
+                toast.done(toastId.current);
+                setError(e);
+              })
+              .finally(() => (toastId.current = null));
+          }
         }
-      }
-      break;
-    case ActionType.setSelectedPermissions:
-      updatedData.target_selectedPermissions = action.payload;
-      break;
-    case ActionType.setRoleId:
-      updatedData.target_roleId = action.payload;
-      break;
-    case ActionType.setRolesList:
-      updatedData.rolesList = action.payload;
-      break;
-    case ActionType.setRoleName:
-      updatedData.target_roleName = action.payload;
-      break;
-    case ActionType.setLoading:
-      updatedData.loading = action.payload;
-      break;
-    case ActionType.setMainWebsiteRole:
-      console.log("Team", action.payload);
-      updatedData.target_websiteRole = action.payload;
-      break;
+        break;
+      case ActionType.setSelectedPermissions:
+        updatedData.target_selectedPermissions = action.payload;
+        break;
+      case ActionType.setRoleId:
+        updatedData.target_roleId = action.payload;
+        break;
+      case ActionType.setRolesList:
+        updatedData.rolesList = action.payload;
+        break;
+      case ActionType.setRoleName:
+        updatedData.target_roleName = action.payload;
+        break;
+      case ActionType.setLoading:
+        updatedData.loading = action.payload;
+        break;
+      case ActionType.setMainWebsiteRole:
+        console.log("Team", action.payload);
+        updatedData.target_websiteRole = action.payload;
+        break;
 
-    default:
-      return updatedData;
+      default:
+        return updatedData;
     }
     return updatedData;
   };
@@ -241,12 +241,15 @@ export default function EditMember() {
       target_bio: target_bio,
       password: newPassword === "" ? undefined : newPassword,
       target_user_id: id,
-
     };
-    const update_profile_perm = user.permission.includes(Permission.UpdateProfile);
+    const update_profile_perm = user.permission.includes(
+      Permission.UpdateProfile,
+    );
     const requestData = {
       ...reqData,
-      permission: update_profile_perm ? target_selectedPermissions.map((perm) => perm.id) : undefined,
+      permission: update_profile_perm
+        ? target_selectedPermissions.map((perm) => perm.id)
+        : undefined,
       role_id: update_profile_perm ? target_roleId : undefined,
       team_role: update_profile_perm ? target_websiteRole : undefined,
     };
@@ -294,8 +297,14 @@ export default function EditMember() {
         });
         dispatch({ type: ActionType.setRoleId, payload: userData.role_id });
         dispatch({ type: ActionType.setRoleName, payload: userData.role });
-        dispatch({ type: ActionType.UpdateProfilePictureLink, payload: userData.id });
-        dispatch({ type: ActionType.setMainWebsiteRole, payload: userData.team_role });
+        dispatch({
+          type: ActionType.UpdateProfilePictureLink,
+          payload: userData.id,
+        });
+        dispatch({
+          type: ActionType.setMainWebsiteRole,
+          payload: userData.team_role,
+        });
       });
     } //TODO handle if no id present
   };
@@ -319,13 +328,23 @@ export default function EditMember() {
 
   const team_roles = Object.keys(MainWebsiteRole)
     .filter((perm) => !isNaN(Number(perm)))
-    .map((key) => ({ name: MainWebsiteRole[key] as MainWebsiteRole, id: Number(key) }));
+    .map((key) => ({
+      name: MainWebsiteRole[key] as MainWebsiteRole,
+      id: Number(key),
+    }));
 
   console.log("Team Roles", team_roles);
 
   return (
     <div className="max-w-4xl mx-auto my-10 p-8 shadow rounded">
-      {(id !== user.id) ? <PermissionProtector permission={[Permission.UpdateProfile]} fallback={false} /> : <></>}
+      {id !== user.id ? (
+        <PermissionProtector
+          permission={[Permission.UpdateProfile]}
+          fallback={false}
+        />
+      ) : (
+        <></>
+      )}
       <h1 className="text-4xl font-semibold mb-4">Edit Info: {target_name}</h1>
       <form className="space-y-6 mt-4" onSubmit={handleSubmit}>
         <hr className="border-t border-gray-300 mt-6 mb-6 w-full" />
@@ -418,7 +437,6 @@ export default function EditMember() {
               className="border p-2 rounded"
             />
           </div>
-
         </div>
         {id === user.id && (
           <div className="relative">
@@ -489,24 +507,27 @@ export default function EditMember() {
                 />
               </div>
             </div>
-            {(newPassword !== confirmPassword || (newPassword && !confirmPassword)) && (
+            {(newPassword !== confirmPassword ||
+              (newPassword && !confirmPassword)) && (
               <p className="text-red-500 text-sm">Passwords do not match</p>
             )}
           </div>
         )}
-        <PermissionProtector permission={[Permission.UpdateProfile]} fallback={true}>
+        <PermissionProtector
+          permission={[Permission.UpdateProfile]}
+          fallback={true}
+        >
           <div className="my-2">
             <h1 className="text-2xl text-left font-medium leading-none my-6">
               Update Role and Permissions
             </h1>
-            <label className="block text-sm font-semibold mb-2">Display Role</label>
+            <label className="block text-sm font-semibold mb-2">
+              Display Role
+            </label>
             <div className="w-1/2">
               <MyMultiselect
                 options={team_roles}
-                selectedOptions={[
-                  team_roles[target_websiteRole]
-                ]}
-
+                selectedOptions={[team_roles[target_websiteRole]]}
                 onSelectionChange={(e) => {
                   dispatch({
                     type: ActionType.setMainWebsiteRole,
@@ -516,7 +537,10 @@ export default function EditMember() {
                 isSingleSelect={true}
               />
             </div>
-            <PermissionProtector permission={[Permission.ReadRole]} fallback={true}>
+            <PermissionProtector
+              permission={[Permission.ReadRole]}
+              fallback={true}
+            >
               <div className="my-2">
                 <label className="block text-sm font-semibold mb-2">Role</label>
                 <div className="w-1/2">
@@ -560,7 +584,9 @@ export default function EditMember() {
         <button
           type="button"
           className="bg-gray-200 text-black p-3 rounded hover:bg-indigo-500 hover:text-white mx-2"
-          onClick={() => { navigate(-1); }}
+          onClick={() => {
+            navigate(-1);
+          }}
         >
           Cancel Update
         </button>

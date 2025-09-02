@@ -102,12 +102,12 @@ export default function AddMember() {
             }
 
             const matchedRole = roles.find(
-              (r) => r.role_name.toLowerCase() === role.toLowerCase()
+              (r) => r.role_name.toLowerCase() === role.toLowerCase(),
             );
 
             if (!matchedRole) {
               errors.push(
-                `Invalid role for ${name}: ${role} in file ${file.name}`
+                `Invalid role for ${name}: ${role} in file ${file.name}`,
               );
               continue;
             }
@@ -127,7 +127,7 @@ export default function AddMember() {
 
           if (skippedRows.length > 0) {
             toast.warning(
-              `The following rows were skipped in ${file.name} due to missing fields: ${skippedRows.join(", ")}`
+              `The following rows were skipped in ${file.name} due to missing fields: ${skippedRows.join(", ")}`,
             );
           }
 
@@ -186,7 +186,7 @@ export default function AddMember() {
     setIsDragging(false);
 
     const droppedFiles = Array.from(e.dataTransfer.files).filter(
-      (file) => file.type === "text/csv"
+      (file) => file.type === "text/csv",
     );
     if (droppedFiles.length === 0) {
       toast.error("Please drop only CSV files");
@@ -197,7 +197,7 @@ export default function AddMember() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []).filter(
-      (file) => file.type === "text/csv"
+      (file) => file.type === "text/csv",
     );
     if (newFiles.length === 0) {
       toast.error("Please select only CSV files");
@@ -208,7 +208,7 @@ export default function AddMember() {
 
   const handleFileDelete = (indexToDelete: number) => {
     setCsvFiles((prevFiles) =>
-      prevFiles.filter((_, index) => index !== indexToDelete)
+      prevFiles.filter((_, index) => index !== indexToDelete),
     );
     if (fileInputRef.current) {
       fileInputRef.current.value = "";

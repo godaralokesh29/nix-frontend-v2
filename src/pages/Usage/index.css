@@ -1,14 +1,14 @@
 img {
-    width: 50vw;
-    height: auto; 
-    padding-left: 1rem;
-    padding-top: 1rem;
+  width: 50vw;
+  height: auto;
+  padding-left: 1rem;
+  padding-top: 1rem;
 }
 
 a {
-    text-decoration: underline;
-    color: blue;
+  text-decoration: underline;
+  color: blue;
 }
 a:hover {
-    color: red;
+  color: red;
 }
