@@ -115,7 +115,7 @@ export default function AddMember() {
             userData.push({
               name: name,
               email: email,
-              role: role,
+              role_id: matchedRole.role_id,
             });
           }
 

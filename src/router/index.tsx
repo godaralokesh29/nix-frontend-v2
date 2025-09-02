@@ -8,10 +8,10 @@ import React from "react";
 const Usage = React.lazy(() => import("@/pages/Usage/index.js"));
 const Login = React.lazy(() => import("@/pages/auth/Login/index.js"));
 const ForgotPassword = React.lazy(
-  () => import("@/pages/auth/ForgotPassword/index.js"),
+  () => import("@/pages/auth/ForgotPassword/index.js")
 );
 const ResetPassword = React.lazy(
-  () => import("@/pages/auth/ResetPassword/index.js"),
+  () => import("@/pages/auth/ResetPassword/index.js")
 );
 const HomePage = React.lazy(() => import("@/pages/HomePage.js"));
 const ProtectedRoute = React.lazy(() => import("./ProtectedRoute.js"));
